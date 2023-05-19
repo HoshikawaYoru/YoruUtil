@@ -58,42 +58,42 @@ public class MultiThreadDownload {
 
     static class MultiThread {
 
-        private final String DownloadFileUrl;
-        private final String SaveFilePath;
-        private final int ThreadCount;
+        private final String downloadFileUrl;
+        private final String saveFilePath;
+        private final int threadCount;
 
 
         MultiThread(String DownloadFileUrl, String SaveFilePath, int ThreadCount ) {
-            this.DownloadFileUrl = DownloadFileUrl;
-            this.SaveFilePath = SaveFilePath;
-            this.ThreadCount = ThreadCount;
+            this.downloadFileUrl = DownloadFileUrl;
+            this.saveFilePath = SaveFilePath;
+            this.threadCount = ThreadCount;
         }
 
 
         public void run() {
-            long NormalThreadSize;
+            long normalThreadSize;
             boolean AllSame = false;
 
             try {
-                if ((getLength() % ThreadCount) == 0){
-                    NormalThreadSize = getLength() / ThreadCount;
+                if ((getLength() % threadCount) == 0){
+                    normalThreadSize = getLength() / threadCount;
                     AllSame = true;
                 }else {
-                    NormalThreadSize = getLength() / (ThreadCount - 1);
+                    normalThreadSize = getLength() / (threadCount - 1);
                 }
 
                 if (AllSame){
-                    for (int i = 0;i < ThreadCount;i++) {
-                        Thread thread = new Thread(new ThreadDownload(DownloadFileUrl, SaveFilePath + "\\" + getFileName() + ".downloading", String.valueOf(i * NormalThreadSize), String.valueOf((i + 1) * NormalThreadSize), getLength()));
+                    for (int i = 0; i < threadCount; i++) {
+                        Thread thread = new Thread(new ThreadDownload(downloadFileUrl, saveFilePath + "\\" + getFileName() + ".downloading", String.valueOf(i * normalThreadSize), String.valueOf((i + 1) * normalThreadSize), getLength()));
                         thread.start();
                     }
                 }else {
-                    for (int i = 0;i < ThreadCount;i++) {
+                    for (int i = 0; i < threadCount; i++) {
                         Thread thread;
-                        if (i + 1 == ThreadCount){
-                            thread = new Thread(new ThreadDownload(DownloadFileUrl, SaveFilePath + "\\" + getFileName() + ".downloading", String.valueOf(i * NormalThreadSize), String.valueOf(getLength()), getLength()));
+                        if (i + 1 == threadCount){
+                            thread = new Thread(new ThreadDownload(downloadFileUrl, saveFilePath + "\\" + getFileName() + ".downloading", String.valueOf(i * normalThreadSize), String.valueOf(getLength()), getLength()));
                         }else {
-                            thread = new Thread(new ThreadDownload(DownloadFileUrl, SaveFilePath + "\\" + getFileName() + ".downloading", String.valueOf(i * NormalThreadSize), String.valueOf((i + 1) * NormalThreadSize), getLength()));
+                            thread = new Thread(new ThreadDownload(downloadFileUrl, saveFilePath + "\\" + getFileName() + ".downloading", String.valueOf(i * normalThreadSize), String.valueOf((i + 1) * normalThreadSize), getLength()));
                         }
                         thread.start();
                     }
@@ -104,7 +104,7 @@ public class MultiThreadDownload {
         }
 
         public long getLength() throws IOException {
-            URL url = new URL(DownloadFileUrl);
+            URL url = new URL(downloadFileUrl);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             long length = httpURLConnection.getContentLengthLong();
             httpURLConnection.disconnect();
@@ -112,39 +112,39 @@ public class MultiThreadDownload {
         }
 
         public String getFileName() throws IOException {
-            int lastUnixPos = DownloadFileUrl.lastIndexOf(47);
-            int lastWindowsPos = DownloadFileUrl.lastIndexOf(92);
+            int lastUnixPos = downloadFileUrl.lastIndexOf(47);
+            int lastWindowsPos = downloadFileUrl.lastIndexOf(92);
             int index = Math.max(lastUnixPos, lastWindowsPos);
-            return DownloadFileUrl.substring(index + 1);
+            return downloadFileUrl.substring(index + 1);
         }
 
 
         static class ThreadDownload implements Runnable{
-            private final String DownloadFileUrl;
-            private final String SaveFilePath;
-            private final String StartPos;
-            private final String StopPos;
-            private final long FileSize;
+            private final String downloadFileUrl;
+            private final String saveFilePath;
+            private final String startPos;
+            private final String stopPos;
+            private final long fileSize;
 
 
-            ThreadDownload(String DownloadFileUrl, String SaveFilePath, String StartPos, String StopPos, long FileSize){
-                this.DownloadFileUrl = DownloadFileUrl;
-                this.SaveFilePath = SaveFilePath;
-                this.StartPos = StartPos;
-                this.StopPos = StopPos;
-                this.FileSize = FileSize;
+            ThreadDownload(String downloadFileUrl, String saveFilePath, String startPos, String stopPos, long fileSize){
+                this.downloadFileUrl = downloadFileUrl;
+                this.saveFilePath = saveFilePath;
+                this.startPos = startPos;
+                this.stopPos = stopPos;
+                this.fileSize = fileSize;
             }
 
             @Override
             public void run() {
                 try {
-                    URL url = new URL(DownloadFileUrl);
+                    URL url = new URL(downloadFileUrl);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestProperty("Range","bytes=" + StartPos + "-" + StopPos);
+                    connection.setRequestProperty("Range","bytes=" + startPos + "-" + stopPos);
                     if (connection.getResponseCode() == HttpURLConnection.HTTP_PARTIAL){
-                        RandomAccessFile file = new RandomAccessFile(SaveFilePath,"rwd");
-                        file.setLength(FileSize);
-                        file.seek(Long.parseLong(StartPos));
+                        RandomAccessFile file = new RandomAccessFile(saveFilePath,"rwd");
+                        file.setLength(fileSize);
+                        file.seek(Long.parseLong(startPos));
                         InputStream inputStream = connection.getInputStream();
 
                         byte[] bytes = new byte[8192];
