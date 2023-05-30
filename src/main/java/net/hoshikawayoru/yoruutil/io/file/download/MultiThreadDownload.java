@@ -1,10 +1,11 @@
 package net.hoshikawayoru.yoruutil.io.file.download;
 
-
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class MultiThreadDownload {
@@ -26,21 +27,24 @@ public class MultiThreadDownload {
 
             int fileSize = conn.getContentLength();
 
+            String fileName = getFileName();
 
             new File(saveDir).mkdirs();
 
-            new File(saveDir + "/" + getFileName()).createNewFile();
+            File saveFile = new File(saveDir, fileName);
 
+            long downloadedSize = 0;
+            if (saveFile.exists()) {
+                downloadedSize = saveFile.length();
+            }
 
-            File saveFile = new File(saveDir + "/" + getFileName());
             RandomAccessFile randomAccessFile = new RandomAccessFile(saveFile, "rw");
             randomAccessFile.setLength(fileSize);
-            randomAccessFile.close();
 
             int blockSize = fileSize / threadCount;
 
             for (int i = 0; i < threadCount; i++) {
-                int startPosition = i * blockSize;
+                int startPosition = i * blockSize + (int) downloadedSize;
                 int endPosition = (i == threadCount - 1) ? fileSize - 1 : (i + 1) * blockSize - 1;
 
                 new DownloadThread(fileUrl, saveFile.getAbsolutePath(), startPosition, endPosition, i).start();
@@ -50,12 +54,29 @@ public class MultiThreadDownload {
         }
     }
 
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public String getSaveDir() {
+        return saveDir;
+    }
+
+    public int getThreadCount() {
+        return threadCount;
+    }
+
     public String getFileName(){
         return new File(fileUrl).getName();
     }
 
-    public void setThreadCount(int threadCount) {
-        this.threadCount = threadCount;
+    public long getFileLength() throws IOException {
+        URL url = new URL(fileUrl);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+        long fileSize = conn.getContentLengthLong();
+        conn.disconnect();
+        return fileSize;
     }
 
     public void setFileUrl(String fileUrl) {
@@ -64,6 +85,10 @@ public class MultiThreadDownload {
 
     public void setSaveDir(String saveDir) {
         this.saveDir = saveDir;
+    }
+
+    public void setThreadCount(int threadCount) {
+        this.threadCount = threadCount;
     }
 
     private class DownloadThread extends Thread {
@@ -104,10 +129,5 @@ public class MultiThreadDownload {
                 e.printStackTrace();
             }
         }
-    }
-
-    public static void main(String[] args) {
-        MultiThreadDownload downloader = new MultiThreadDownload("https://launcher.mojang.com/v1/objects/d8321edc9470e56b8ad5c67bbd16beba25843336/server.jar", "Y:/Test", 5);
-        downloader.download();
     }
 }
