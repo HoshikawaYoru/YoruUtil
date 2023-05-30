@@ -6,8 +6,8 @@ import java.net.URLConnection;
 import java.text.DecimalFormat;
 
 public class SingleThreadDownload {
-    private final String saveDir;
-    private final String fileUrl;
+    private String saveDir;
+    private String fileUrl;
     private long startTime;
     private long endTime;
     private long fileSize;
@@ -58,5 +58,13 @@ public class SingleThreadDownload {
 
     public String getFileName(){
         return new File(fileUrl).getName();
+    }
+
+    public void setFileUrl(String fileUrl){
+        this.fileUrl = fileUrl;
+    }
+
+    public void setSaveDir(String saveDir){
+        this.saveDir = saveDir;
     }
 }

@@ -17,9 +17,9 @@ public class MultiThreadDownload {
 
     private static final int BUFFER_SIZE = 1024 * 1024;
 
-    private final String url;
-    private final String savePath;
-    private final int threadCount;
+    private String url;
+    private String savePath;
+    private int threadCount;
     private long startTime;
     private long endTime;
 
@@ -79,6 +79,17 @@ public class MultiThreadDownload {
         return endTime - startTime;
     }
 
+    public void setSavePath(String savePath) {
+        this.savePath = savePath;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setThreadCount(int threadCount) {
+        this.threadCount = threadCount;
+    }
 
     private static class DownloadTask implements Runnable {
 
