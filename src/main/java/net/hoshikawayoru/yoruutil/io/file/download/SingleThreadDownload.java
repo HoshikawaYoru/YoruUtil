@@ -20,12 +20,16 @@ public class SingleThreadDownload {
     public void download() {
         try {
             URL url = new URL(fileUrl);
+            new File(saveDir).mkdirs();
+            new File(saveDir + "/" + getFileName()).createNewFile();
             URLConnection connection = url.openConnection();
             InputStream in = new BufferedInputStream(connection.getInputStream());
             String fileName = new File(connection.getURL().getFile()).getName();
-            File file = new File(saveDir + File.separator + fileName);
+            File file = new File(saveDir + "/" + getFileName());
             FileOutputStream out = new FileOutputStream(file);
             OutputStream bout = new BufferedOutputStream(out);
+
+
 
             byte[] buffer = new byte[8192];
             int length;

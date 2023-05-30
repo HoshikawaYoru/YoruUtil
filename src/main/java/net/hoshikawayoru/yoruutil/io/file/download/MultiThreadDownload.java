@@ -1,170 +1,113 @@
 package net.hoshikawayoru.yoruutil.io.file.download;
 
+
 import java.io.File;
-import java.io.IOException;
+import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
 import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.channels.SocketChannel;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MultiThreadDownload {
 
-    private static final int BUFFER_SIZE = 1024 * 1024;
-
-    private String url;
-    private String savePath;
+    private String fileUrl;
+    private String saveDir;
     private int threadCount;
-    private long startTime;
-    private long endTime;
 
-    public MultiThreadDownload(String fileUrl, String saveDir, int threadCount) {
-        this.url = fileUrl;
-        this.savePath = saveDir + File.separator + new File(fileUrl).getName();
+    public MultiThreadDownload(String downloadUrl, String saveDir, int threadCount) {
+        this.fileUrl = downloadUrl;
+        this.saveDir = saveDir;
         this.threadCount = threadCount;
     }
 
-    public void download() throws Exception {
-        File file = new File(savePath);
-        if (!file.exists()) {
-            file.createNewFile();
-        }
+    public void download() {
+        try {
+            URL url = new URL(fileUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-        long fileSize = getFileSize();
+            int fileSize = conn.getContentLength();
 
-        startTime = System.currentTimeMillis();
 
-        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
-        CountDownLatch latch = new CountDownLatch(threadCount);
-        long blockSize = fileSize / threadCount;
-        for (int i = 0; i < threadCount; i++) {
-            long start = i * blockSize;
-            long end = (i == threadCount - 1) ? fileSize - 1 : start + blockSize - 1;
-            executorService.submit(new DownloadTask(this.url, this.savePath, start, end, latch));
-        }
+            new File(saveDir).mkdirs();
 
-        latch.await();
-        executorService.shutdown();
+            new File(saveDir + "/" + getFileName()).createNewFile();
 
-        endTime = System.currentTimeMillis();
-    }
 
-    public String getFileName() {
-        return new File(url).getName();
-    }
+            File saveFile = new File(saveDir + "/" + getFileName());
+            RandomAccessFile randomAccessFile = new RandomAccessFile(saveFile, "rw");
+            randomAccessFile.setLength(fileSize);
+            randomAccessFile.close();
 
-    public long getFileSize() throws IOException {
-        URL url = new URL(this.url);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("HEAD");
-        conn.setConnectTimeout(5000);
-        conn.setReadTimeout(5000);
-        int code = conn.getResponseCode();
-        if (code == 200) {
-            return conn.getContentLengthLong();
-        } else if (code == 206) {
-            String range = conn.getHeaderField("Content-Range");
-            return Long.parseLong(range.substring(range.lastIndexOf("/") + 1));
-        } else {
-            throw new RuntimeException("Unsupported response code: " + code);
+            int blockSize = fileSize / threadCount;
+
+            for (int i = 0; i < threadCount; i++) {
+                int startPosition = i * blockSize;
+                int endPosition = (i == threadCount - 1) ? fileSize - 1 : (i + 1) * blockSize - 1;
+
+                new DownloadThread(fileUrl, saveFile.getAbsolutePath(), startPosition, endPosition, i).start();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    public long getDownloadTime(){
-        return endTime - startTime;
-    }
-
-    public void setSavePath(String savePath) {
-        this.savePath = savePath;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+    public String getFileName(){
+        return new File(fileUrl).getName();
     }
 
     public void setThreadCount(int threadCount) {
         this.threadCount = threadCount;
     }
 
-    private static class DownloadTask implements Runnable {
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
 
-        private final String url;
-        private final String savePath;
-        private final long start;
-        private final long end;
-        private final CountDownLatch latch;
+    public void setSaveDir(String saveDir) {
+        this.saveDir = saveDir;
+    }
 
-        public DownloadTask(String url, String savePath, long start, long end, CountDownLatch latch) {
-            this.url = url;
-            this.savePath = savePath;
-            this.start = start;
-            this.end = end;
-            this.latch = latch;
+    private class DownloadThread extends Thread {
+
+        private final String downloadUrl;
+        private final String saveFilePath;
+        private final int startPosition;
+        private final int endPosition;
+        public DownloadThread(String downloadUrl, String saveFilePath, int startPosition, int endPosition, int threadId) {
+            this.downloadUrl = downloadUrl;
+            this.saveFilePath = saveFilePath;
+            this.startPosition = startPosition;
+            this.endPosition = endPosition;
         }
 
         @Override
         public void run() {
-            HttpURLConnection conn = null;
-            FileChannel fileChannel = null;
-            SocketChannel socketChannel = null;
             try {
-                conn = (HttpURLConnection) new URL(url).openConnection();
-                conn.setRequestMethod("GET");
-                conn.setConnectTimeout(5000);
-                conn.setReadTimeout(5000);
-                conn.setRequestProperty("Range", "bytes=" + start + "-" + end);
-                int code = conn.getResponseCode();
-                if (code != 206) {
-                    throw new RuntimeException("Unsupported response code: " + code);
+                URL url = new URL(downloadUrl);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                String range = "bytes=" + startPosition + "-" + endPosition;
+                conn.setRequestProperty("Range", range);
+
+                InputStream inputStream = conn.getInputStream();
+                RandomAccessFile randomAccessFile = new RandomAccessFile(saveFilePath, "rw");
+                randomAccessFile.seek(startPosition);
+
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = inputStream.read(buffer, 0, buffer.length)) != -1) {
+                    randomAccessFile.write(buffer, 0, length);
                 }
 
-                int port;
-                if (new URL(url).getProtocol().equals("http")){
-                    port = 80;
-                }else if (new URL(url).getProtocol().equals("https")){
-                    port = 443;
-                }else {
-                    port = -1;
-                }
-
-                fileChannel = new RandomAccessFile(savePath, "rw").getChannel();
-                socketChannel = SocketChannel.open(new InetSocketAddress(new URL(url).getHost(), port));
-                socketChannel.configureBlocking(true);
-                socketChannel.socket().setSoTimeout(5000);
-                ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
-
-                while (fileChannel.position() < end) {
-                    buffer.clear();
-                    int length = socketChannel.read(buffer);
-                    if (length == -1) {
-                        break;
-                    }
-                    buffer.flip();
-                    fileChannel.write(buffer);
-                }
+                inputStream.close();
+                randomAccessFile.close();
             } catch (Exception e) {
                 e.printStackTrace();
-            } finally {
-                try {
-                    if (socketChannel != null) {
-                        socketChannel.close();
-                    }
-                    if (fileChannel != null) {
-                        fileChannel.close();
-                    }
-                    if (conn != null) {
-                        conn.disconnect();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                latch.countDown();
             }
         }
+    }
+
+    public static void main(String[] args) {
+        MultiThreadDownload downloader = new MultiThreadDownload("https://launcher.mojang.com/v1/objects/d8321edc9470e56b8ad5c67bbd16beba25843336/server.jar", "Y:/Test", 5);
+        downloader.download();
     }
 }
