@@ -10,8 +10,8 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
 public class Download {
-    public static void download(String file, File saveDir) throws IOException {
-        if (file == null || saveDir == null || saveDir.isFile()){
+    public static void download(String fileUrl, File saveDir) throws IOException {
+        if (fileUrl == null || saveDir == null || saveDir.isFile()){
             return;
         }
 
@@ -19,14 +19,14 @@ public class Download {
             saveDir.mkdirs();
         }
 
-        File saveFile = new File(saveDir + "/" + new File(file).getName());
+        File saveFile = new File(saveDir + "/" + new File(fileUrl).getName());
 
         if (!saveFile.exists()){
 
             saveFile.createNewFile();
         }
 
-        URL url = new URL(file);
+        URL url = new URL(fileUrl);
         InputStream inputStream = url.openStream();
         FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
         ReadableByteChannel readableByteChannel = Channels.newChannel(inputStream);
