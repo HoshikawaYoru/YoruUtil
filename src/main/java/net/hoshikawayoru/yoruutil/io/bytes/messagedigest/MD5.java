@@ -3,7 +3,7 @@ package net.hoshikawayoru.yoruutil.io.bytes.messagedigest;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public class MessageDigest5 {
+public class MD5 {
     private static final int[] T = new int[64];
 
     static {
