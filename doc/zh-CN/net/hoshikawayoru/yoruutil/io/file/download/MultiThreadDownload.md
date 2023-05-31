@@ -24,7 +24,6 @@ public class Main {
     public static void main(String[] args) {
         String downloadFileUrl = "https://example.com/file.zip";
         String saveDirectoryPath = "/path/to/save/directory";
-
         Download.download(downloadFileUrl, new File(saveDirectoryPath), 5);
     }
 }
