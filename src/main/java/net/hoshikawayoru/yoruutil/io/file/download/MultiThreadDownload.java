@@ -13,7 +13,6 @@ public class MultiThreadDownload {
         if (fileUrl == null || saveDir == null || saveDir.isFile() || threadCount <= 0){
             return;
         }
-
         if (!saveDir.exists()){
             saveDir.mkdirs();
         }
@@ -52,7 +51,6 @@ public class MultiThreadDownload {
         conn.disconnect();
         executorService.shutdown();
     }
-
 
 
     private static class DownloadThread extends Thread {

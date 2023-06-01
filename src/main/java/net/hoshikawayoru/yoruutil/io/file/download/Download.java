@@ -11,18 +11,17 @@ import java.nio.channels.ReadableByteChannel;
 
 public class Download {
     public static void download(String fileUrl, File saveDir) throws IOException {
-        if (fileUrl == null || saveDir == null || saveDir.isFile()){
+        if (fileUrl == null || saveDir == null || saveDir.isFile()) {
             return;
         }
 
-        if (saveDir.exists()){
+        if (saveDir.exists()) {
             saveDir.mkdirs();
         }
 
         File saveFile = new File(saveDir + "/" + new File(fileUrl).getName());
 
-        if (!saveFile.exists()){
-
+        if (!saveFile.exists()) {
             saveFile.createNewFile();
         }
 
