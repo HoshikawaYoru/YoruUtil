@@ -14,7 +14,7 @@ public class MultiThreadDownload {
             return;
         }
 
-        if (saveDir.exists()){
+        if (!saveDir.exists()){
             saveDir.mkdirs();
         }
 
