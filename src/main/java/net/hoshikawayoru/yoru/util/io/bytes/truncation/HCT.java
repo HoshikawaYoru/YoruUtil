@@ -1,6 +1,6 @@
-package net.hoshikawayoru.yoruutil.io.bytes.truncation;
+package net.hoshikawayoru.yoru.util.io.bytes.truncation;
 
-public class HCTA {
+public class HCT {
     public static byte[] truncation(byte[] bytes, int blockSize){
         if (bytes == null){
             return null;
