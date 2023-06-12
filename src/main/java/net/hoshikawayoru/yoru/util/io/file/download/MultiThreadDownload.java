@@ -1,4 +1,4 @@
-package net.hoshikawayoru.yoruutil.io.file.download;
+package net.hoshikawayoru.yoru.util.io.file.download;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +32,6 @@ public class MultiThreadDownload {
         conn.disconnect();
 
         int blockSize = fileSize / threadCount;
-        int lastBlock = fileSize - (threadCount - 1) * blockSize;
 
         RandomAccessFile raf = new RandomAccessFile(saveFile, "rwd");
         raf.setLength(fileSize);

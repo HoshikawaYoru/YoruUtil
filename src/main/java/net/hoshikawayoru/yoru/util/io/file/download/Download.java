@@ -1,4 +1,4 @@
-package net.hoshikawayoru.yoruutil.io.file.download;
+package net.hoshikawayoru.yoru.util.io.file.download;
 
 import java.io.File;
 import java.io.FileOutputStream;

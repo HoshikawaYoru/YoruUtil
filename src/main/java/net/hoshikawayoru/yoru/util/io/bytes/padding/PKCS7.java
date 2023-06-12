@@ -1,4 +1,4 @@
-package net.hoshikawayoru.yoruutil.io.bytes.padding;
+package net.hoshikawayoru.yoru.util.io.bytes.padding;
 
 import java.util.Arrays;
 

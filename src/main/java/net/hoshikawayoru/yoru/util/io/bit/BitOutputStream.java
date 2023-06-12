@@ -1,4 +1,4 @@
-package net.hoshikawayoru.yoruutil.io.bit;
+package net.hoshikawayoru.yoru.util.io.bit;
 
 import java.io.IOException;
 import java.io.OutputStream;

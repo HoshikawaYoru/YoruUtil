@@ -1,4 +1,4 @@
-package net.hoshikawayoru.yoruutil.io.bytes.messagedigest;
+package net.hoshikawayoru.yoru.util.io.bytes.messagedigest;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
