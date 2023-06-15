@@ -96,7 +96,6 @@ public class ByteManipulate {
                     highestByte = b;
                 }
             }
-
             return highestByte;
         }
         public static boolean getIsContainsByte(byte[] bytes, byte b){
