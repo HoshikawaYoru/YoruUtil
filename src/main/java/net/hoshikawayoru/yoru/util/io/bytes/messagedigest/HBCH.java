@@ -5,7 +5,7 @@ import net.hoshikawayoru.yoru.util.io.bytes.manipulate.ByteManipulate;
 import net.hoshikawayoru.yoru.util.io.bytes.padding.HNP;
 import net.hoshikawayoru.yoru.util.io.bytes.truncation.HCT4;
 
-public class HNBC {
+public class HBCH {
     public static byte[] digest(byte[] bytes){
         int IV1 = 0x67452301 * ByteManipulate.operate.arithmetic.addAll(bytes);
         int IV2 = 0xefcdab89 * ByteManipulate.get.getHighestByte(bytes);
