@@ -1,11 +1,11 @@
-package net.hoshikawayoru.minsed.util.io.file;
+package net.hoshikawayoru.minsed.util.file;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 
-public class FileReader {
+public class FileUtil {
     public static final class bytes {
         public static byte[] readAll(File file) throws IOException {
             if (file == null){

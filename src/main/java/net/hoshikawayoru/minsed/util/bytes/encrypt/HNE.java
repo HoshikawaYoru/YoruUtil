@@ -1,6 +1,6 @@
-package net.hoshikawayoru.minsed.util.io.bytes.encrypt;
+package net.hoshikawayoru.minsed.util.bytes.encrypt;
 
-public class HRE {
+public class HNE {
     public static byte[] encrypt(byte[] bytes){
         if (bytes == null){
             return null;
@@ -8,9 +8,10 @@ public class HRE {
 
         byte[] out = new byte[bytes.length];
 
-        int o = 0;
-        for (int i = bytes.length - 1;i > 0;i--){
-            out[o] = bytes[i];
+        int i = 0;
+        for (byte b : bytes){
+            out[i] = (byte) ~b;
+            i++;
         }
         return out;
     }
@@ -22,9 +23,10 @@ public class HRE {
 
         byte[] out = new byte[bytes.length];
 
-        int o = 0;
-        for (int i = bytes.length - 1;i > 0;i--){
-            out[o] = bytes[i];
+        int i = 0;
+        for (byte b : bytes){
+            out[i] = (byte) ~b;
+            i++;
         }
         return out;
     }

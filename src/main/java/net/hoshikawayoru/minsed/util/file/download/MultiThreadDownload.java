@@ -1,4 +1,4 @@
-package net.hoshikawayoru.minsed.util.io.file.download;
+package net.hoshikawayoru.minsed.util.file.download;
 
 import java.io.File;
 import java.io.IOException;

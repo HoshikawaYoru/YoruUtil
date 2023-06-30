@@ -1,6 +1,6 @@
-package net.hoshikawayoru.minsed.util.io.bytes.confound;
+package net.hoshikawayoru.minsed.util.bytes.confound;
 
-import net.hoshikawayoru.minsed.util.io.bytes.manipulate.ByteManipulate;
+import net.hoshikawayoru.minsed.util.bytes.ByteUtil;
 
 public class HBECs {
     public static byte[] confound(byte[] bytes, int seed){
@@ -18,7 +18,7 @@ public class HBECs {
         for (byte b : bytes){
             pos2 = (Math.abs(Math.abs(b) << seed)) > (bytes.length - 1) ? (Math.abs(Math.abs(b) << seed) % 255) % (bytes.length - 1)  : Math.abs(Math.abs(b) << seed) % 255;
 
-            out = ByteManipulate.operate.pos.transposition(out, pos1, pos2);
+            out = ByteUtil.transposition(out, pos1, pos2);
             pos1++;
         }
 

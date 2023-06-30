@@ -1,4 +1,4 @@
-package net.hoshikawayoru.minsed.util.io.bytes.truncation;
+package net.hoshikawayoru.minsed.util.bytes.truncation;
 
 public class HCT3 {
     public static byte[] truncation(byte[] bytes, int blockSize){

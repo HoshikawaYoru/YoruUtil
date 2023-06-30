@@ -1,4 +1,4 @@
-package net.hoshikawayoru.minsed.util.io.bytes.padding;
+package net.hoshikawayoru.minsed.util.bytes.padding;
 
 public class HNP {
     public static byte[] padding(byte[] bytes, int blockSize) {

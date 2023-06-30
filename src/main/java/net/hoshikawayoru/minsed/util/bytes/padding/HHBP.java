@@ -1,6 +1,8 @@
-package net.hoshikawayoru.minsed.util.io.bytes.padding;
+package net.hoshikawayoru.minsed.util.bytes.padding;
 
-public class HRP {
+import net.hoshikawayoru.minsed.util.bytes.ByteUtil;
+
+public class HHBP {
     public static byte[] padding(byte[] bytes, int blockSize){
         if (bytes == null) {
             return null;
@@ -11,18 +13,14 @@ public class HRP {
         }
 
         byte[] out = new byte[blockSize];
-
-        int num = 0;
+        byte highestByte = ByteUtil.getHighestByte(bytes);
+        boolean flag = false;
 
         System.arraycopy(bytes, 0, out, 0, bytes.length);
 
         for (int i = bytes.length;i < blockSize;i++){
-            if (num == bytes.length){
-                num = 0;
-            }
-
-            out[i] = bytes[num];
-            num++;
+            out[i] = flag ? highestByte : 23;
+            flag = !flag;
         }
 
         return out;

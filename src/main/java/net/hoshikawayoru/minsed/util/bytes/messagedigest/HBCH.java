@@ -1,14 +1,14 @@
-package net.hoshikawayoru.minsed.util.io.bytes.messagedigest;
+package net.hoshikawayoru.minsed.util.bytes.messagedigest;
 
-import net.hoshikawayoru.minsed.util.io.bytes.confound.HBEC;
-import net.hoshikawayoru.minsed.util.io.bytes.manipulate.ByteManipulate;
-import net.hoshikawayoru.minsed.util.io.bytes.padding.HNP;
-import net.hoshikawayoru.minsed.util.io.bytes.truncation.HCT4;
+import net.hoshikawayoru.minsed.util.bytes.confound.HBEC;
+import net.hoshikawayoru.minsed.util.bytes.ByteUtil;
+import net.hoshikawayoru.minsed.util.bytes.padding.HNP;
+import net.hoshikawayoru.minsed.util.bytes.truncation.HCT4;
 
 public class HBCH {
     public static byte[] digest(byte[] bytes){
-        int IV1 = 0x67452301 * ByteManipulate.operate.arithmetic.addAll(bytes);
-        int IV2 = 0xefcdab89 * ByteManipulate.get.getHighestByte(bytes);
+        int IV1 = 0x67452301 * ByteUtil.addAll(bytes);
+        int IV2 = 0xefcdab89 * ByteUtil.getHighestByte(bytes);
         int IV3 = 0x98badcfe * bytes.length;
         int IV4 = Math.abs(0x10325476) * bytes[0] + 3;
 
@@ -60,7 +60,7 @@ public class HBCH {
             }
         }
 
-        for (int i = 0;i < ByteManipulate.operate.arithmetic.addAll(out);i++){
+        for (int i = 0; i < ByteUtil.addAll(out); i++){
             out = HBEC.confound(out);
         }
 

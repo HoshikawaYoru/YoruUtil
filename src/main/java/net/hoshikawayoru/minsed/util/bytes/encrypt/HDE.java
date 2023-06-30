@@ -1,4 +1,4 @@
-package net.hoshikawayoru.minsed.util.io.bytes.encrypt;
+package net.hoshikawayoru.minsed.util.bytes.encrypt;
 
 import java.util.HashMap;
 
