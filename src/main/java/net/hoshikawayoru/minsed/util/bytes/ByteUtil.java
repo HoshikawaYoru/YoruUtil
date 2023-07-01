@@ -323,5 +323,18 @@ public class ByteUtil {
     public static byte[] reorder(byte[] bytes){
         return reorder(bytes, true);
     }
+    public static ArrayList<Byte> toArrayList(byte[] bytes){
+        if (bytes == null){
+            return null;
+        }
+
+        ArrayList<Byte> list = new ArrayList<>();
+
+        for (int i = 0;i < bytes.length;i++){
+            list.add(i, bytes[i]);
+        }
+
+        return list;
+    }
 }
 
