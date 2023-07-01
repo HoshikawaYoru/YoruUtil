@@ -70,6 +70,15 @@ public class ByteUtil {
         return toHexString(bytes, true);
     }
 
+    public static String toBinaryString(byte[] bytes){
+        StringBuilder sb = new StringBuilder();
+
+        for (byte b : bytes){
+            sb.append(String.format("%8s", Integer.toBinaryString(b & 0xFF)).replace(' ', '0'));
+        }
+        return sb.toString();
+    }
+
     public static byte[] filtration(byte[] bytes, byte filtrationByte){
         int length = 0;
         for (byte b : bytes) {
