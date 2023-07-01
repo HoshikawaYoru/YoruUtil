@@ -151,6 +151,10 @@ public class ByteUtil {
         return out;
     }
     public static byte[] removeByte(byte[] bytes, int index) {
+        if (index < 0 || index > bytes.length - 1){
+            return null;
+        }
+
         byte[] out = new byte[bytes.length - 1];
         for (int i = 0,j = 0;i < bytes.length - 1;i++){
             if (i == index){
