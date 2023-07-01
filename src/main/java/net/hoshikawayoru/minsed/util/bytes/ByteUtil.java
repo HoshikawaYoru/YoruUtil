@@ -49,13 +49,23 @@ public class ByteUtil {
         }
         return out;
     }
-    public static String toHexString(byte[] bytes) {
+    public static String toHexString(byte[] bytes, boolean lowercase) {
         StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(String.format("%02x", b & 0xff));
+        if (lowercase){
+            for (byte b : bytes) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+        }else {
+            for (byte b : bytes) {
+                sb.append(String.format("%02X", b & 0xff));
+            }
         }
         return sb.toString();
     }
+    public static String toHexString(byte[] bytes) {
+        return toHexString(bytes, true);
+    }
+
     public static byte[] filtration(byte[] bytes, byte filtrationByte){
         int length = 0;
         for (byte b : bytes) {
