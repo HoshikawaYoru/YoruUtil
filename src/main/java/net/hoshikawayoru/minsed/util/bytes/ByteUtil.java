@@ -31,7 +31,6 @@ public class ByteUtil {
         }
         return out;
     }
-
     public static byte[] generateRandomNoDuplicationBytes(int blockSize) {
         if (blockSize > 256){
             return null;
@@ -69,7 +68,6 @@ public class ByteUtil {
     public static String toHexString(byte[] bytes) {
         return toHexString(bytes, true);
     }
-
     public static String toBinaryString(byte[] bytes){
         StringBuilder sb = new StringBuilder();
 
@@ -78,7 +76,6 @@ public class ByteUtil {
         }
         return sb.toString();
     }
-
     public static byte[] filtration(byte[] bytes, byte filtrationByte){
         int length = 0;
         for (byte b : bytes) {
@@ -138,7 +135,6 @@ public class ByteUtil {
         Random random = new Random();
         return bytes[random.nextInt(bytes.length - 1)];
     }
-
     public static byte[] reorder(byte[] bytes){
         List<Byte> list = new ArrayList<>();
         for (int i = 0;i < bytes.length;i++){
@@ -151,6 +147,17 @@ public class ByteUtil {
 
         for (int i = 0;i < bytes.length;i++){
             out[i] = list.get(i);
+        }
+        return out;
+    }
+    public static byte[] removeByte(byte[] bytes, int index) {
+        byte[] out = new byte[bytes.length - 1];
+        for (int i = 0,j = 0;i < bytes.length - 1;i++){
+            if (i == index){
+                j++;
+            }
+            out[i] = bytes[j];
+            j++;
         }
         return out;
     }
