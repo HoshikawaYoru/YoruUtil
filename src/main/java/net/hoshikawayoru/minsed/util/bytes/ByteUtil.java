@@ -138,5 +138,21 @@ public class ByteUtil {
         Random random = new Random();
         return bytes[random.nextInt(bytes.length - 1)];
     }
+
+    public static byte[] reorder(byte[] bytes){
+        List<Byte> list = new ArrayList<>();
+        for (int i = 0;i < bytes.length;i++){
+            list.add(i, bytes[i]);
+        }
+
+        byte[] out = new byte[bytes.length];
+
+        Collections.shuffle(list);
+
+        for (int i = 0;i < bytes.length;i++){
+            out[i] = list.get(i);
+        }
+        return out;
+    }
 }
 
