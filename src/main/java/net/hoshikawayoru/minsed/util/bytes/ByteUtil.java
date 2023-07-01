@@ -33,6 +33,10 @@ public class ByteUtil {
     }
 
     public static byte[] generateRandomNoDuplicationBytes(int blockSize) {
+        if (blockSize > 256){
+            return null;
+        }
+
         Byte[] bytes = new Byte[blockSize];
         for (int i = 0; i < 256; i++) {
             bytes[i] = (byte) i;
