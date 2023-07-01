@@ -134,5 +134,9 @@ public class ByteUtil {
         }
         return count;
     }
+    public static byte getRandomPosByte(byte[] bytes){
+        Random random = new Random();
+        return bytes[random.nextInt(bytes.length - 1)];
+    }
 }
 
