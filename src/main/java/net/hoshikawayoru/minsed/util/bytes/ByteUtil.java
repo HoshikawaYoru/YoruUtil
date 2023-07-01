@@ -125,5 +125,14 @@ public class ByteUtil {
         }
         return false;
     }
+    public static int getByteCount(byte[] bytes, byte b){
+        int count = 0;
+        for (byte bt : bytes){
+            if (bt == b){
+                count++;
+            }
+        }
+        return count;
+    }
 }
 
