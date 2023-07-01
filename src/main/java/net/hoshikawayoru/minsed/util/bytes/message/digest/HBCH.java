@@ -1,4 +1,4 @@
-package net.hoshikawayoru.minsed.util.bytes.messagedigest;
+package net.hoshikawayoru.minsed.util.bytes.message.digest;
 
 import net.hoshikawayoru.minsed.util.bytes.confound.HBEC;
 import net.hoshikawayoru.minsed.util.bytes.ByteUtil;
