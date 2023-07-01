@@ -221,5 +221,19 @@ public class ByteUtil {
         }
         return out;
     }
+    public static byte[] addChunkBytes(byte[] bytes, int index, byte[] bytes1){
+        byte[] out = new byte[bytes.length + bytes1.length];
+
+        for (int i = 0,j = 0,o = 0;i < out.length;i++){
+            if (i >= index && i <= index + bytes1.length - 1){
+                out[i] = bytes1[j];
+                j++;
+            }else {
+                out[i] = bytes[o];
+                o++;
+            }
+        }
+        return out;
+    }
 }
 
