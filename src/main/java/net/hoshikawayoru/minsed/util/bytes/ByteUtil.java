@@ -94,6 +94,16 @@ public class ByteUtil {
         }
         return highestByte;
     }
+    public static byte getLowestByte(byte[] bytes){
+        byte highestByte = 127;
+
+        for (byte b : bytes){
+            if (b < highestByte){
+                highestByte = b;
+            }
+        }
+        return highestByte;
+    }
     public static boolean getIsContainsByte(byte[] bytes, byte b) {
         for (byte b1 : bytes) {
             if (b1 == b) {
