@@ -2,6 +2,10 @@ package net.hoshikawayoru.minsed.util.integer;
 
 public class IntegerUtil {
     public static Integer getHighestByte(Integer[] integers){
+        if (integers == null){
+            return null;
+        }
+
         int highestInteger = Integer.MIN_VALUE;
 
         for (Integer integer : integers){
@@ -12,6 +16,7 @@ public class IntegerUtil {
         return highestInteger;
     }
     public static Integer getLowestByte(Integer[] integers){
+        if
         int lowestInteger = Integer.MAX_VALUE;
 
         for (Integer integer : integers){
