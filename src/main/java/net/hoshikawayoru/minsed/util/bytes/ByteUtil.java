@@ -189,6 +189,12 @@ public class ByteUtil {
         return out;
     }
     public static byte[] append(byte[]... bytes){
+        for (byte[] bytes1 : bytes){
+            if (bytes1 == null){
+                return null;
+            }
+        }
+
         int length = 0;
         for (byte[] bytes1 : bytes){
             length += bytes1.length;
