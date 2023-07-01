@@ -277,5 +277,13 @@ public class ByteUtil {
 
         return false;
     }
+    public static int getBytePos(byte[] bytes, byte b){
+        for (int i = 0;i < bytes.length;i++){
+            if (bytes[i] == b){
+                return i;
+            }
+        }
+        return -1;
+    }
 }
 
