@@ -285,5 +285,25 @@ public class ByteUtil {
         }
         return -1;
     }
+    public static byte[] reorder(byte[] bytes){
+        if (bytes == null){
+            return null;
+        }
+
+        byte[] bytesClone = bytes.clone();
+        byte[] out = new byte[bytes.length];
+
+        for (int i = 0;i < bytes.length;i++){
+            int pos = 0;
+            if (bytesClone != null) {
+                pos = getBytePos(bytesClone, getLowestByte(bytesClone));
+            }
+            if (bytesClone != null) {
+                out[i] = bytesClone[pos];
+            }
+            bytesClone = removeByte(bytesClone, pos);
+        }
+        return out;
+    }
 }
 
