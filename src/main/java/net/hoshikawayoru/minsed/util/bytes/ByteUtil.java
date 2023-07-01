@@ -204,5 +204,22 @@ public class ByteUtil {
         }
         return out;
     }
+    public static byte[] removeChunkBytes(byte[] bytes, int startPos, int endPos) {
+        if (startPos < 0 || startPos > bytes.length - 1 || endPos < 0 || endPos > bytes.length - 1 || startPos >= endPos) {
+            return null;
+        }
+
+        byte[] out = new byte[bytes.length - (endPos - startPos + 1)];
+
+        for (int i = 0, j = 0; j < bytes.length; j++) {
+            if (j >= startPos && j <= endPos) {
+                continue;
+            }
+
+            out[i] = bytes[j];
+            i++;
+        }
+        return out;
+    }
 }
 
