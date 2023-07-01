@@ -285,7 +285,7 @@ public class ByteUtil {
         }
         return -1;
     }
-    public static byte[] reorder(byte[] bytes){
+    public static byte[] reorder(byte[] bytes, boolean ascendingOrder){
         if (bytes == null){
             return null;
         }
@@ -293,17 +293,35 @@ public class ByteUtil {
         byte[] bytesClone = bytes.clone();
         byte[] out = new byte[bytes.length];
 
-        for (int i = 0;i < bytes.length;i++){
-            int pos = 0;
-            if (bytesClone != null) {
-                pos = getBytePos(bytesClone, getLowestByte(bytesClone));
+        if (ascendingOrder){
+
+            for (int i = 0;i < bytes.length;i++){
+                int pos = 0;
+                if (bytesClone != null) {
+                    pos = getBytePos(bytesClone, getLowestByte(bytesClone));
+                }
+                if (bytesClone != null) {
+                    out[i] = bytesClone[pos];
+                }
+                bytesClone = removeByte(bytesClone, pos);
             }
-            if (bytesClone != null) {
-                out[i] = bytesClone[pos];
+        }else {
+
+            for (int i = 0;i < bytes.length;i++){
+                int pos = 0;
+                if (bytesClone != null) {
+                    pos = getBytePos(bytesClone, getHighestByte(bytesClone));
+                }
+                if (bytesClone != null) {
+                    out[i] = bytesClone[pos];
+                }
+                bytesClone = removeByte(bytesClone, pos);
             }
-            bytesClone = removeByte(bytesClone, pos);
         }
         return out;
+    }
+    public static byte[] reorder(byte[] bytes){
+        return reorder(bytes, true);
     }
 }
 
