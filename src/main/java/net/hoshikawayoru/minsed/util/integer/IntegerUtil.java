@@ -16,7 +16,10 @@ public class IntegerUtil {
         return highestInteger;
     }
     public static Integer getLowestByte(Integer[] integers){
-        if
+        if (integers == null){
+            return null;
+        }
+
         int lowestInteger = Integer.MAX_VALUE;
 
         for (Integer integer : integers){
