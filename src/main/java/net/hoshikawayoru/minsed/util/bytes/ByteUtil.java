@@ -245,6 +245,18 @@ public class ByteUtil {
         }
         return out;
     }
+    public static boolean containByte(byte[] bytes, byte b){
+        if (bytes == null){
+            return false;
+        }
+
+        for (byte b1 : bytes){
+            if (b1 == b){
+                return true;
+            }
+        }
+        return false;
+    }
     public static boolean containBytes(byte[] bytes, byte[] bytes1) {
         if (bytes1.length > bytes.length) {
             return false;
