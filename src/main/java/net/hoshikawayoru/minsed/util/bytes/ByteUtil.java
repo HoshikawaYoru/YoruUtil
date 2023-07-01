@@ -135,7 +135,7 @@ public class ByteUtil {
         Random random = new Random();
         return bytes[random.nextInt(bytes.length - 1)];
     }
-    public static byte[] reorder(byte[] bytes){
+    public static byte[] reshuffle(byte[] bytes){
         List<Byte> list = new ArrayList<>();
         for (int i = 0;i < bytes.length;i++){
             list.add(i, bytes[i]);
