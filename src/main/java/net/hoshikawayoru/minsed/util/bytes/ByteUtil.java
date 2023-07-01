@@ -188,5 +188,21 @@ public class ByteUtil {
         }
         return out;
     }
+    public static byte[] append(byte[]... bytes){
+        int length = 0;
+        for (byte[] bytes1 : bytes){
+            length += bytes1.length;
+        }
+
+        byte[] out = new byte[length];
+
+        int pos = 0;
+
+        for (byte[] bytes1 : bytes){
+            System.arraycopy(bytes1, 0, out, pos, bytes1.length);
+            pos += bytes1.length;
+        }
+        return out;
+    }
 }
 
