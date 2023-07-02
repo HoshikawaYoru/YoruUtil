@@ -38,4 +38,25 @@ public class Tuple<E> {
     public int length() {
         return arrayList.size();
     }
+
+    /**
+     * 返回元组的字符串形式
+     *
+     * @return 元组的字符串形式
+     */
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("(");
+        stringBuilder.append(arrayList.get(0));
+
+        for (int i = 1; i < arrayList.size(); i++) {
+            stringBuilder.append(", ");
+            stringBuilder.append(arrayList.get(i));
+        }
+
+        stringBuilder.append(")");
+        return stringBuilder.toString();
+    }
 }
