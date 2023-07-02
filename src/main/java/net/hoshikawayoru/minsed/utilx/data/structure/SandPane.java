@@ -6,19 +6,19 @@ import java.util.HashMap;
 public class SandPane<E> {
     private HashMap<E, E> hashMap = new HashMap<>();
 
-    public boolean isExist(E element){
-        if (hashMap.get(element) != null){
+    public boolean isExist(E element) {
+        if (hashMap.get(element) != null) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
-    public void add(E element){
+    public void add(E element) {
         hashMap.put(element, element);
     }
 
-    public void remove(E element){
+    public void remove(E element) {
         hashMap.remove(element);
     }
 
@@ -29,13 +29,12 @@ public class SandPane<E> {
         Collection<E> collection = hashMap.values();
 
 
-
         stringBuilder.append("(");
 
         int i = 0;
 
-        for (E element : collection){
-            if (i == collection.size() - 1){
+        for (E element : collection) {
+            if (i == collection.size() - 1) {
                 stringBuilder.append(element);
                 stringBuilder.append(")");
                 continue;
