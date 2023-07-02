@@ -29,4 +29,13 @@ public class Tuple<E> {
     public E get(int index) {
         return arrayList.get(index);
     }
+
+    /**
+     * 返回元组的大小
+     *
+     * @return 元组的大小
+     */
+    public int length() {
+        return arrayList.size();
+    }
 }
