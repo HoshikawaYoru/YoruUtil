@@ -17,4 +17,13 @@ public class Tuple<E> {
     public Tuple(E[] elements){
         arrayList.addAll(Arrays.asList(elements));
     }
+
+    /**
+     * 通过索引获取元素
+     * @param index 索引
+     * @return 元素
+     */
+    public E get(int index){
+        return arrayList.get(index);
+    }
 }
