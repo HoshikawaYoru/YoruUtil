@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 /**
  * 这个类是元组的实现
+ *
  * @param <E> 元素
  */
 public class Tuple<E> {
@@ -12,18 +13,20 @@ public class Tuple<E> {
 
     /**
      * 元组是不可修改的.
+     *
      * @param elements 元素
      */
-    public Tuple(E[] elements){
+    public Tuple(E[] elements) {
         arrayList.addAll(Arrays.asList(elements));
     }
 
     /**
      * 通过索引获取元素
+     *
      * @param index 索引
      * @return 元素
      */
-    public E get(int index){
+    public E get(int index) {
         return arrayList.get(index);
     }
 }
