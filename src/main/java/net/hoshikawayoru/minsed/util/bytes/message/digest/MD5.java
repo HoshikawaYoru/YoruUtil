@@ -1,27 +1,28 @@
-package net.hoshikawayoru.minsed.utilx.algorithm.hash;
+package net.hoshikawayoru.minsed.util.bytes.message.digest;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public class MD5 {
+    private static final int[] T = new int[64];
+
+    static {
+        for (int i = 0; i < 64; i++) {
+            T[i] = (int) (long) ((1L << 32) * Math.abs(Math.sin(i + 1)));
+        }
+    }
+
     public static byte[] digest(byte[] bytes) {
         int[] A = {0x67452301};
         int[] B = {0xefcdab89};
         int[] C = {0x98badcfe};
         int[] D = {0x10325476};
 
-        int[] T = new int[64];
-
-        for (int i = 0; i < 64; i++) {
-            T[i] = (int) (long) ((1L << 32) * Math.abs(Math.sin(i + 1)));
-        }
-
         int padLength = 64 - (bytes.length + 9) % 64;
         if (padLength == 64) {
             padLength = 0;
         }
         int length = bytes.length + 1 + padLength + 8;
-
         byte[] padMessage = new byte[length];
         System.arraycopy(bytes, 0, padMessage, 0, bytes.length);
         padMessage[bytes.length] = (byte) 0x80;
@@ -33,6 +34,7 @@ public class MD5 {
         bf.putLong(bytes.length * 8L);
         byte[] lengthBytes = bf.array();
         System.arraycopy(lengthBytes, 0, padMessage, padMessage.length - 8, 8);
+
 
         for (int i = 0; i < padMessage.length; i += 64) {
             int[] X = new int[16];
@@ -88,4 +90,5 @@ public class MD5 {
 
         return md5Bytes;
     }
+
 }

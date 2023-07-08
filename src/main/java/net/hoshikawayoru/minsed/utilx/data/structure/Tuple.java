@@ -1,40 +1,37 @@
 package net.hoshikawayoru.minsed.utilx.data.structure;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+public class Tuple {
+    private final Object[] objects;
 
-
-public class Tuple<E> {
-    private ArrayList<E> arrayList = new ArrayList<>();
-
-    public Tuple(E[] elements) {
-        arrayList.addAll(Arrays.asList(elements));
+    public Tuple(Object... objects) {
+        this.objects = objects;
     }
 
-
-    public E get(int index) {
-        return arrayList.get(index);
+    public Object get(int index){
+        if (index < 0 || index > objects.length - 1){
+            return null;
+        }
+        return objects[index];
     }
 
-
-    public int length() {
-        return arrayList.size();
+    public int length(){
+        return objects.length;
     }
-
 
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("(");
-        stringBuilder.append(arrayList.get(0));
+        stringBuilder.append(objects[0]);
 
-        for (int i = 1; i < arrayList.size(); i++) {
+        for (int i = 1; i < objects.length; i++) {
             stringBuilder.append(", ");
-            stringBuilder.append(arrayList.get(i));
+            stringBuilder.append(objects[i].toString());
         }
 
         stringBuilder.append(")");
+
         return stringBuilder.toString();
     }
 }
